@@ -6,13 +6,13 @@
 # Step 1:
 # Create dockerpath
 # dockerpath=<your docker ID/path>
-export dockerpath=softveda/simple_node_app
+export dockerpath=jensenlin/simple_node_app
 
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
 docker tag simple_node_app $dockerpath:latest
-#docker login -u softveda --password-stdin
+#docker login -u jensenlin --password-stdin
 
 # Step 3:
 # Push image to a docker repository

@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     APP_NAME = "simple_node_app"
-    AWS_ACCOUNT = "915323986442"
+    AWS_ACCOUNT = "878626968022"
   }
 
   parameters {
@@ -49,16 +49,16 @@ pipeline {
     stage('Push image to DockerHub') {
       steps {
         withDockerRegistry(credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/') {
-          sh 'docker tag $APP_NAME softveda/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker tag $APP_NAME softveda/$APP_NAME:latest'
-          sh 'docker push softveda/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker push softveda/$APP_NAME:latest'
+          sh 'docker tag $APP_NAME jensenlin/$APP_NAME:$BUILD_NUMBER'
+          sh 'docker tag $APP_NAME jensenlin/$APP_NAME:latest'
+          sh 'docker push jensenlin/$APP_NAME:$BUILD_NUMBER'
+          sh 'docker push jensenlin/$APP_NAME:latest'
         }
       }
       post {
         always {
-          sh 'docker image rm -f softveda/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker image rm -f softveda/$APP_NAME:latest'
+          sh 'docker image rm -f jensenlin/$APP_NAME:$BUILD_NUMBER'
+          sh 'docker image rm -f jensenlin/$APP_NAME:latest'
         }
       }
     }

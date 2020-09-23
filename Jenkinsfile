@@ -51,8 +51,8 @@ pipeline {
   //        sh 'docker tag $APP_NAME jensenlin/$APP_NAME:latest'
   //        sh 'docker push jensenlin/$APP_NAME:$BUILD_NUMBER'
   //        sh 'docker push jensenlin/$APP_NAME:latest'
-        }
-      }
+  //      }
+  //    }
   //    post {
   //      always {
   //        sh 'docker image rm -f jensenlin/$APP_NAME:$BUILD_NUMBER'

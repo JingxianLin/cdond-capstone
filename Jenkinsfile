@@ -20,18 +20,18 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
-      steps {
-        sh 'sudo docker build -t $APP_NAME .'
-        sh 'docker image ls -q $APP_NAME:latest'
-      }
-    }
+  //  stage('Build Docker Image') {
+  //    steps {
+  //      sh 'docker build -t $APP_NAME .'
+  //      sh 'docker image ls -q $APP_NAME:latest'
+  //    }
+  //  }
 
     stage('Scan Docker Image') {
       steps {
         aquaMicroscanner imageName: 'simple_node_app:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
       }
-    }
+     }
 
     stage('Run and Test App in Docker') {
       steps {

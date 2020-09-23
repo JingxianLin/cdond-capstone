@@ -53,13 +53,13 @@ pipeline {
   //        sh 'docker push jensenlin/$APP_NAME:latest'
         }
       }
-      post {
-        always {
+  //    post {
+  //      always {
   //        sh 'docker image rm -f jensenlin/$APP_NAME:$BUILD_NUMBER'
   //        sh 'docker image rm -f jensenlin/$APP_NAME:latest'
-        }
-      }
-    }
+  //      }
+  //    }
+  //  }
 
     stage('Create ECR repository') {
       steps {

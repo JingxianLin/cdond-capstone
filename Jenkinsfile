@@ -15,8 +15,7 @@ pipeline {
     stage('Linting') {
       steps {
         parallel(
-          htmllint: {sh 'tidy -q -e views/*.html'},
-          hadolint: {sh 'hadolint Dockerfile'}
+          htmllint: {sh 'tidy -q -e views/*.html'}
         )
       }
     }

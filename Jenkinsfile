@@ -27,11 +27,11 @@ pipeline {
   //    }
   //  }
 
-    stage('Scan Docker Image') {
-      steps {
-        aquaMicroscanner imageName: 'simple_node_app:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
-      }
-     }
+  //  stage('Scan Docker Image') {
+  //    steps {
+  //      aquaMicroscanner imageName: 'simple_node_app:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
+  //    }
+  //   }
 
     stage('Run and Test App in Docker') {
       steps {

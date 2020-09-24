@@ -20,12 +20,12 @@ pipeline {
       }
     }
 
-  //  stage('Build Docker Image') {
-  //    steps {
-  //      sh 'docker build -t $APP_NAME .'
-  //      sh 'docker image ls -q $APP_NAME:latest'
-  //    }
-  //  }
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t $APP_NAME .'
+        sh 'docker image ls -q $APP_NAME:latest'
+      }
+    }
 
   //  stage('Scan Docker Image') {
   //    steps {

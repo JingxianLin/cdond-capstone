@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = "simple_node_app"
+    APP_NAME = "simple_web_app"
     AWS_ACCOUNT = "175478927513"
   }
 

@@ -20,12 +20,12 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
-      steps {
-        sh 'docker build -t $APP_NAME .'
-        sh 'docker image ls -q $APP_NAME:latest'
-      }
-    }
+  //  stage('Build Docker Image') {
+  //    steps {
+  //      sh 'docker build -t $APP_NAME .'
+  //      sh 'docker image ls -q $APP_NAME:latest'
+  //    }
+  //  }
 
   //  stage('Scan Docker Image') {
   //    steps {
@@ -33,39 +33,39 @@ pipeline {
   //    }
   //   }
 
-   stage('Run and Test App in Docker') {
-      steps {
-        sh 'docker run --name $APP_NAME -p 8082:80 -d app'
-        sh 'sleep 5'
-        sh 'curl -s http://localhost:80'
-        sh 'docker logs $APP_NAME'
-        sh 'docker stop $APP_NAME'
-        sh 'docker rm $APP_NAME'
-      }
-    }
+  // stage('Run and Test App in Docker') {
+  //    steps {
+  //      sh 'docker run --name $APP_NAME -p 8082:80 -d app'
+  //      sh 'sleep 5'
+  //      sh 'curl -s http://localhost:80'
+  //      sh 'docker logs $APP_NAME'
+  //      sh 'docker stop $APP_NAME'
+  //      sh 'docker rm $APP_NAME'
+  //    }
+  //  }
 
-    stage('Push image to DockerHub') {
-      steps {
-        withDockerRegistry(credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/') {
-          sh 'docker tag $APP_NAME jensenlin/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker tag $APP_NAME jensenlin/$APP_NAME:latest'
-          sh 'docker push jensenlin/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker push jensenlin/$APP_NAME:latest'
-        }
-      }
-      post {
-        always {
-          sh 'docker image rm -f jensenlin/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker image rm -f jensenlin/$APP_NAME:latest'
-        }
-      }
-    }
+  //  stage('Push image to DockerHub') {
+  //    steps {
+  //      withDockerRegistry(credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/') {
+  //        sh 'docker tag $APP_NAME jensenlin/$APP_NAME:$BUILD_NUMBER'
+  //        sh 'docker tag $APP_NAME jensenlin/$APP_NAME:latest'
+  //        sh 'docker push jensenlin/$APP_NAME:$BUILD_NUMBER'
+  //        sh 'docker push jensenlin/$APP_NAME:latest'
+  //      }
+  //    }
+  //    post {
+  //      always {
+  //        sh 'docker image rm -f jensenlin/$APP_NAME:$BUILD_NUMBER'
+  //        sh 'docker image rm -f jensenlin/$APP_NAME:latest'
+  //      }
+  //    }
+  //  }
 
-    stage('Create ECR repository') {
-      steps {
-        sh 'aws cloudformation deploy --stack-name simple-node-app-repo --region us-west-2 --template-file cfn-ecr.yml --parameter-overrides RepositoryName=$APP_NAME'
-      }
-    }
+  //  stage('Create ECR repository') {
+  //    steps {
+  //      sh 'aws cloudformation deploy --stack-name simple-node-app-repo --region us-west-2 --template-file cfn-ecr.yml --parameter-overrides RepositoryName=$APP_NAME'
+  //    }
+  //  }
 
     stage('Push image to ECR') {
       steps {

@@ -35,7 +35,7 @@ pipeline {
 
    stage('Run and Test App in Docker') {
      steps {
-       sh 'docker run --name $APP_NAME -p 8082:80 -d app'
+       sh 'docker run --name $APP_NAME -p 8080:80 -d app'
        sh 'sleep 5'
        sh 'curl -s http://localhost:80'
        sh 'docker logs $APP_NAME'

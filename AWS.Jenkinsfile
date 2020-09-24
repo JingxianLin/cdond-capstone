@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     APP_NAME = "simple_node_app"
-    AWS_ACCOUNT = "878626968022"
+    AWS_ACCOUNT = "175478927513"
   }
   
   parameters {

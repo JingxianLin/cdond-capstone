@@ -95,12 +95,12 @@ pipeline {
       steps {
         echo "Deploying to EKS cluster ..."
 
-        sh 'sudo kubectl apply -f app-deployment-aws.yml'
-        sh 'sudo kubectl rollout status deployment.apps/simple-node-app --timeout=5m --watch=true'
+        sh 'kubectl apply -f app-deployment-aws.yml'
+        sh 'kubectl rollout status deployment.apps/simple-node-app --timeout=5m --watch=true'
 
         script {
           K8S_SVC = sh (
-            script: "sudo kubectl get services | grep simple-node-app | awk '{print \$4}'",
+            script: "kubectl get services | grep simple-node-app | awk '{print \$4}'",
             returnStdout: true
           ).trim()
                 

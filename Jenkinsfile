@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = "simple_test_app"
+    APP_NAME = "simple_node_app"
     AWS_ACCOUNT = "878626968022"
   }
 
@@ -27,17 +27,17 @@ pipeline {
       }
     }
 
-   // stage('Scan Docker Image') {
-   //   steps {
-   //     aquaMicroscanner imageName: 'simple_node_app:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
-   //   }
-   // }
+    stage('Scan Docker Image') {
+      steps {
+        aquaMicroscanner imageName: 'simple_node_app:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
+      }
+    }
 
-  stage('Run and Test App in Docker') {
+   stage('Run and Test App in Docker') {
      steps {
-       sh 'docker run --name $APP_NAME -p 8083:80 -d $APP_NAME'
+       sh 'docker run --name $APP_NAME -p 8080:80 -d $APP_NAME'
        sh 'sleep 5'
-       sh 'curl -s http://localhost:8083'
+       sh 'curl -s http://localhost:8080'
        sh 'docker logs $APP_NAME'
        sh 'docker stop $APP_NAME'
        sh 'docker rm $APP_NAME'
@@ -61,54 +61,54 @@ pipeline {
      }
    }
 
- //  stage('Create ECR repository') {
- //    steps {
- //      sh 'aws cloudformation deploy --stack-name simple-node-app-repo --region us-west-2 --template-file cfn-ecr.yml --parameter-overrides RepositoryName=$APP_NAME'
- //    }
- //  }
+   stage('Create ECR repository') {
+     steps {
+       sh 'aws cloudformation deploy --stack-name simple-node-app-repo --region us-west-2 --template-file cfn-ecr.yml --parameter-overrides RepositoryName=$APP_NAME'
+     }
+   }
 
- //   stage('Push image to ECR') {
- //     steps {
- //       withAWS(credentials: 'aws', region: 'us-west-2') {        
- //         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
- //         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
- //         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
- //         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
- //       }
- //     }
- //     post {
- //       always {
- //         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
- //         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
- //         sh 'docker image rm -f $APP_NAME:latest'
- //       }
- //     }
- //   }
+   stage('Push image to ECR') {
+     steps {
+       withAWS(credentials: 'aws', region: 'us-west-2') {        
+         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+       }
+     }
+     post {
+       always {
+         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+         sh 'docker image rm -f $APP_NAME:latest'
+       }
+     }
+   }
 
- //   stage('Deploy to EKS') {
- //     environment {
- //       EKS_STATUS = sh (script:'eksctl get cluster --name=basic-cluster --region=us-west-2', returnStatus: true)
- //     }
- //     when {
- //       expression {environment name: 'EKS_STATUS', value: '0'}
- //     }
- //     steps {
- //       echo "Deploying to EKS cluster ..."
+   stage('Deploy to EKS') {
+     environment {
+       EKS_STATUS = sh (script:'eksctl get cluster --name=basic-cluster --region=us-west-2', returnStatus: true)
+     }
+     when {
+       expression {environment name: 'EKS_STATUS', value: '0'}
+     }
+     steps {
+       echo "Deploying to EKS cluster ..."
 
- //       sh 'kubectl apply -f app-deployment-aws.yml'
- //       sh 'kubectl rollout status deployment.apps/simple-node-app --timeout=5m --watch=true'
+       sh 'kubectl apply -f app-deployment-aws.yml'
+       sh 'kubectl rollout status deployment.apps/simple-node-app --timeout=5m --watch=true'
 
- //       script {
- //         K8S_SVC = sh (
- //           script: "kubectl get services | grep simple-node-app | awk '{print \$4}'",
- //           returnStdout: true
- //         ).trim()
+       script {
+         K8S_SVC = sh (
+           script: "kubectl get services | grep simple-node-app | awk '{print \$4}'",
+           returnStdout: true
+         ).trim()
                 
- //         echo "Kubernetes service URL: ${K8S_SVC}"
- //         sleep 5
- //         sh "curl -m 5 -S http://$K8S_SVC"
- //       }
- //     }
- //   }
+         echo "Kubernetes service URL: ${K8S_SVC}"
+         sleep 5
+         sh "curl -m 5 -S http://$K8S_SVC"
+       }
+     }
+   }
   }
 }

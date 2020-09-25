@@ -109,6 +109,6 @@ pipeline {
  //         sh "curl -m 5 -S http://$K8S_SVC"
  //       }
  //     }
-    }
+ //   }
   }
 }

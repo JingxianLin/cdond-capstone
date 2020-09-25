@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = "simple_web_app"
+    APP_NAME = "simple_webapp"
     AWS_ACCOUNT = "878626968022"
   }
 
@@ -20,12 +20,12 @@ pipeline {
       }
     }
 
-   // stage('Build Docker Image') {
-   //   steps {
-   //     sh 'docker build -t $APP_NAME .'
-   //     sh 'docker image ls -q $APP_NAME:latest'
-   //   }
-   // }
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t $APP_NAME .'
+        sh 'docker image ls -q $APP_NAME:latest'
+      }
+    }
 
    // stage('Scan Docker Image') {
    //   steps {

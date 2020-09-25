@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: simple-node-app
-          image: 878626968022.dkr.ecr.us-west-2.amazonaws.com/simple_node_app:latest
+          image: 878626968022.dkr.ecr.us-west-2.amazonaws.com/simple_webnodeapp:latest
           ports:
             - containerPort: 80
           resources:

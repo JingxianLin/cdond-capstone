@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = "simple_app"
+    APP_NAME = "simple"
     AWS_ACCOUNT = "878626968022"
   }
 
@@ -35,9 +35,9 @@ pipeline {
 
    stage('Run and Test App in Docker') {
      steps {
-       sh 'docker run --name $APP_NAME -p 8081:80 -d $APP_NAME'
+       sh 'docker run --name $APP_NAME -p 8082:80 -d $APP_NAME'
        sh 'sleep 5'
-       sh 'curl -s http://localhost:8081'
+       sh 'curl -s http://localhost:8082'
        sh 'docker logs $APP_NAME'
        sh 'docker stop $APP_NAME'
        sh 'docker rm $APP_NAME'

@@ -37,7 +37,7 @@ pipeline {
      steps {
        sh 'docker run --name $APP_NAME -p 8081:80 -d $APP_NAME'
        sh 'sleep 5'
-       sh 'curl -s http://localhost:80'
+       sh 'curl -s http://localhost:8081'
        sh 'docker logs $APP_NAME'
        sh 'docker stop $APP_NAME'
        sh 'docker rm $APP_NAME'

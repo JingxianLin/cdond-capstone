@@ -20,12 +20,12 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
-      steps {
-        sh 'docker build -t $APP_NAME .'
-        sh 'docker image ls -q $APP_NAME:latest'
-      }
-    }
+  //  stage('Build Docker Image') {
+  //    steps {
+  //      sh 'docker build -t $APP_NAME .'
+  //      sh 'docker image ls -q $APP_NAME:latest'
+  //    }
+  //  }
 
    // stage('Scan Docker Image') {
    //   steps {
@@ -33,16 +33,16 @@ pipeline {
    //   }
    // }
 
-   stage('Run and Test App in Docker') {
-     steps {
-       sh 'docker run --name $APP_NAME -p 8082:80 -d $APP_NAME'
-       sh 'sleep 5'
-       sh 'curl -s http://localhost:8082'
-       sh 'docker logs $APP_NAME'
-       sh 'docker stop $APP_NAME'
-       sh 'docker rm $APP_NAME'
-     }
-   }
+ // stage('Run and Test App in Docker') {
+ //    steps {
+ //      sh 'docker run --name $APP_NAME -p 8082:80 -d $APP_NAME'
+ //      sh 'sleep 5'
+ //      sh 'curl -s http://localhost:8082'
+ //      sh 'docker logs $APP_NAME'
+ //      sh 'docker stop $APP_NAME'
+ //      sh 'docker rm $APP_NAME'
+ //    }
+ //  }
 
    stage('Push image to DockerHub') {
      steps {

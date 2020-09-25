@@ -67,23 +67,23 @@ pipeline {
  //    }
  //  }
 
-    stage('Push image to ECR') {
-      steps {
-        withAWS(credentials: 'aws', region: 'us-west-2') {        
-          sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
-          sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
-        }
-      }
-      post {
-        always {
-          sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
-          sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
-          sh 'docker image rm -f $APP_NAME:latest'
-        }
-      }
-    }
+ //   stage('Push image to ECR') {
+ //     steps {
+ //       withAWS(credentials: 'aws', region: 'us-west-2') {        
+ //         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+ //         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+ //         sh 'docker tag $APP_NAME $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+ //         sh 'docker push $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+ //       }
+ //     }
+ //     post {
+ //       always {
+ //         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:$BUILD_NUMBER'
+ //         sh 'docker image rm -f $AWS_ACCOUNT.dkr.ecr.us-west-2.amazonaws.com/$APP_NAME:latest'
+ //         sh 'docker image rm -f $APP_NAME:latest'
+ //       }
+ //     }
+ //   }
 
     stage('Deploy to EKS') {
       environment {
